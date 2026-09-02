@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>King Barber Estudio | Reserva de clientes</title>
+    <meta name="description" content="Reserva de turnos para clientes de King Barber Estudio." />
+    <link rel="icon" type="image/jpeg" href="logo.jpg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Playfair+Display:wght@700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body data-page="customer">
+    <div class="page-shell customer-shell">
+      <header class="topbar customer-topbar">
+        <div class="brand">
+          <img src="logo.jpg" alt="King Barber Estudio" class="brand-logo" />
+          <div>
+            <strong class="brand-title">KING BARBER ESTUDIO</strong>
+          </div>
+        </div>
+      </header>
+
+      <main class="customer-layout">
+        <section class="card profile-card">
+          <div class="section-head compact">
+            <div>
+              <p class="eyebrow">Tu perfil</p>
+              <h2>Registra tus datos</h2>
+            </div>
+            <span id="profile-status" class="profile-status">Sin registrar</span>
+          </div>
+
+          <div class="booking-form">
+            <label>
+              Nombre
+              <input type="text" id="customer-name" placeholder="Tu nombre" autocomplete="name" />
+            </label>
+            <label>
+              Teléfono
+              <input type="tel" id="customer-phone" placeholder="+56 9 1234 5678" autocomplete="tel" />
+            </label>
+            <label>
+              Correo electrónico
+              <input type="email" id="customer-email" placeholder="tu@correo.com" autocomplete="email" />
+            </label>
+          </div>
+
+          <button id="save-profile-btn" class="primary-btn" type="button">Guardar mis datos</button>
+        </section>
+
+        <section class="card booking-card customer-card">
+          <div class="section-head">
+            <div>
+              <p class="eyebrow">Reservar</p>
+              <h2>Elige tu servicio y horario</h2>
+            </div>
+            <div class="pill" id="service-price-pill">Corte • $25.000</div>
+          </div>
+
+          <div class="booking-form">
+            <label>
+              Fecha
+              <input type="date" id="date-picker" />
+            </label>
+
+            <label>
+              Servicio
+              <select id="service-select">
+                <option value="corte">Corte ($25.000)</option>
+                <option value="corte-barba">Corte con Barba ($30.000)</option>
+                <option value="full">Corte con Barba y Cejas ($35.000)</option>
+              </select>
+            </label>
+          </div>
+
+          <div class="slot-summary">
+            <span id="selected-date-label">Selecciona una fecha</span>
+            <span id="selected-service-label">Servicio: Corte</span>
+          </div>
+
+          <div id="time-grid" class="time-grid" aria-live="polite"></div>
+        </section>
+
+        <section class="card reservations-card">
+          <div class="section-head compact">
+            <div>
+              <p class="eyebrow">Seguimiento</p>
+              <h2>Mis reservas</h2>
+            </div>
+          </div>
+          <div id="my-reservations" class="my-reservations" aria-live="polite"></div>
+        </section>
+      </main>
+    </div>
+
+    <div id="reservation-modal" class="modal hidden" role="dialog" aria-modal="true">
+      <div class="modal-content">
+        <button id="close-modal" class="close-btn" type="button" aria-label="Cerrar modal">×</button>
+        <p class="eyebrow">Confirmar turno</p>
+        <h3>Completa tu reserva</h3>
+        <p id="selected-info" class="selected-info"></p>
+
+        <button id="confirm-reservation" class="primary-btn" type="button">
+          Confirmar reserva
+        </button>
+      </div>
+    </div>
+
+    <script src="supabase-config.js"></script>
+    <script src="app.js"></script>
+  </body>
+</html>

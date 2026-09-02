@@ -1,0 +1,203 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>King Barber Estudio | Panel administrador</title>
+    <link rel="icon" type="image/jpeg" href="logo.jpg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Playfair+Display:wght@700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body data-page="admin">
+    <div class="page-shell admin-shell">
+      <header class="topbar">
+        <div class="brand">
+          <img src="logo.jpg" alt="King Barber Estudio" class="brand-logo" />
+          <div>
+            <strong class="brand-title">KING BARBER ESTUDIO</strong>
+            <small>Panel de administración</small>
+          </div>
+        </div>
+
+        <div class="topbar-actions">
+          <button id="admin-logout-btn" class="ghost-btn hidden" type="button">Cerrar sesión</button>
+        </div>
+      </header>
+
+      <section id="admin-login-panel" class="card auth-card">
+        <p class="eyebrow">Administración</p>
+        <h2>Acceso seguro</h2>
+        <form id="admin-login-form" class="login-form">
+          <label>
+            Contraseña
+            <input type="password" id="admin-password" placeholder="Ingresa tu contraseña" />
+          </label>
+          <button class="primary-btn" type="submit">Ingresar</button>
+        </form>
+      </section>
+
+      <div id="admin-content" class="hidden">
+        <div class="share-wrap">
+          <section class="card share-card">
+            <div class="section-head compact">
+              <div>
+                <p class="eyebrow">Link directo</p>
+                <h3>Compartir agenda</h3>
+              </div>
+            </div>
+
+            <input id="share-link" type="text" readonly />
+            <img id="qr-code" alt="Código QR para reserva" />
+          </section>
+        </div>
+
+        <div class="report-controls card">
+          <div class="filter-row">
+            <label>
+              Filtrar por mes
+              <input type="month" id="report-month" />
+            </label>
+            <label>
+              Filtrar por día
+              <input type="date" id="report-day" />
+            </label>
+            <button id="clear-filters-btn" class="ghost-btn" type="button">Borrar filtros</button>
+          </div>
+        </div>
+
+        <section class="card table-card" id="historial">
+          <div class="section-head">
+            <div>
+              <p class="eyebrow">Historial</p>
+              <h2>Reservas y control</h2>
+            </div>
+          </div>
+
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Cliente</th>
+                  <th>Fecha</th>
+                  <th>Horario</th>
+                  <th>Servicio</th>
+                  <th>Precio</th>
+                  <th>Estado</th>
+                  <th>Acciones</th>
+                </tr>
+              </thead>
+              <tbody id="reservations-body"></tbody>
+            </table>
+          </div>
+        </section>
+
+        <section class="metrics-grid" aria-label="Estadísticas de la barbería">
+          <article class="card metric-card">
+            <span>Turnos hoy</span>
+            <strong id="today-bookings">0</strong>
+          </article>
+          <article class="card metric-card">
+            <span>Ventas del día</span>
+            <strong id="daily-revenue">$0</strong>
+          </article>
+          <article class="card metric-card">
+            <span>Ocupación</span>
+            <strong id="occupancy-rate">0%</strong>
+          </article>
+          <article class="card metric-card">
+            <span>Total ingresos</span>
+            <strong id="total-revenue">$0</strong>
+          </article>
+          <article class="card metric-card">
+            <span>Ventas del mes</span>
+            <strong id="monthly-revenue">$0</strong>
+          </article>
+          <article class="card metric-card">
+            <span>Reservas del mes</span>
+            <strong id="monthly-bookings">0</strong>
+          </article>
+          <article class="card metric-card">
+            <span>Bloqueos activos</span>
+            <strong id="blocked-slots">0</strong>
+          </article>
+          <article class="card metric-card">
+            <span>Promedio por servicio</span>
+            <strong id="avg-service-price">$0</strong>
+          </article>
+        </section>
+
+        <section class="card admin-panel" id="dashboard">
+          <div class="section-head compact">
+            <div>
+              <p class="eyebrow">Control</p>
+              <h3>Bloquear horario</h3>
+            </div>
+          </div>
+
+          <label>
+            Fecha
+            <input type="date" id="block-date" />
+          </label>
+
+          <label>
+            Hora de inicio
+            <select id="block-start"></select>
+          </label>
+
+          <label>
+            Motivo
+            <input type="text" id="block-reason" placeholder="Ej: Mantenimiento, descanso, cierre" />
+          </label>
+
+          <button class="primary-btn" id="block-slot-btn" type="button">Bloquear turno</button>
+        </section>
+      </div>
+    </div>
+
+    <div id="reservation-edit-modal" class="modal hidden" role="dialog" aria-modal="true">
+      <div class="modal-content edit-modal-content">
+        <button id="close-edit-modal" class="close-btn" type="button" aria-label="Cerrar edición">×</button>
+        <p class="eyebrow">Editar reserva</p>
+        <h3>Actualizar turno</h3>
+
+        <input type="hidden" id="edit-reservation-id" />
+
+        <label>
+          Nombre
+          <input type="text" id="edit-customer-name" />
+        </label>
+
+        <label>
+          Teléfono
+          <input type="tel" id="edit-customer-phone" />
+        </label>
+
+        <label>
+          Fecha
+          <input type="date" id="edit-date" />
+        </label>
+
+        <label>
+          Servicio
+          <select id="edit-service-select">
+            <option value="corte">Corte ($25.000)</option>
+            <option value="corte-barba">Corte con Barba ($30.000)</option>
+            <option value="full">Corte con Barba y Cejas ($35.000)</option>
+          </select>
+        </label>
+
+        <label>
+          Horario
+          <select id="edit-start-time"></select>
+        </label>
+
+        <button id="save-edition" class="primary-btn" type="button">Guardar cambios</button>
+      </div>
+    </div>
+
+    <script src="supabase-config.js"></script>
+    <script src="app.js"></script>
+  </body>
+</html>
