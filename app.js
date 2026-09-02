@@ -212,14 +212,14 @@ document.addEventListener('DOMContentLoaded', async () => {
   function normalizeSupabaseRows(rows = []) {
     return rows.map((row) => ({
       id: row.id,
-      date: row.date,
-      start: row.start,
-      end: row.end,
-      name: row.name || row.customer_name || 'Cliente',
-      phone: row.phone || '',
+      date: row.date || row.fecha,
+      start: row.start || row.hora_inicio || row.hora,
+      end: row.end || row.hora_fin,
+      name: row.name || row.nombre || row.customer_name || 'Cliente',
+      phone: row.phone || row.telefono || '',
       email: row.email || '',
       service: row.service || 'corte',
-      status: row.status || 'reservado',
+      status: row.status || row.estado || 'reservado',
       price: Number(row.price || 0),
       reason: row.reason || '',
       createdAt: row.created_at || row.createdAt || new Date().toISOString()
@@ -634,14 +634,19 @@ document.addEventListener('DOMContentLoaded', async () => {
     const record = {
       id: crypto.randomUUID(),
       date: datePicker.value,
+      fecha: datePicker.value,
       start: selectedStart,
       end: selectedEnd,
+      hora_inicio: selectedStart,
       name: nameInput.value.trim(),
       phone: phoneInput.value.trim(),
       email: emailInput.value.trim(),
       service: serviceSelect.value,
+      servicio: serviceSelect.value,
       status: 'reservado',
+      estado: 'reservado',
       price: service.price,
+      precio: service.price,
       created_at: new Date().toISOString()
     };
 
@@ -686,12 +691,17 @@ document.addEventListener('DOMContentLoaded', async () => {
     const record = {
       id: crypto.randomUUID(),
       date,
+      fecha: date,
       start,
       end: blockTime.end,
+      hora_inicio: start,
       reason,
+      servicio: 'bloqueo',
       status: 'bloqueado',
+      estado: 'bloqueado',
       created_at: new Date().toISOString(),
       price: 0,
+      precio: 0,
       name: 'Bloqueo administrativo',
       phone: ''
     };
