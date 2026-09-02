@@ -12,6 +12,15 @@ const sentReminders = new Set();
 app.use(express.json());
 app.use(express.static(__dirname));
 
+app.get('/api/notifications/status', (req, res) => {
+  res.json({
+    mailUserConfigured: Boolean(process.env.MAIL_USER),
+    mailPasswordConfigured: Boolean(process.env.MAIL_PASSWORD),
+    adminEmailConfigured: Boolean(process.env.ADMIN_EMAIL),
+    supabaseConfigured: Boolean(process.env.SUPABASE_REST_URL && process.env.SUPABASE_KEY)
+  });
+});
+
 function getTransporter() {
   if (!process.env.MAIL_USER || !process.env.MAIL_PASSWORD) {
     throw new Error('Falta configurar MAIL_USER y MAIL_PASSWORD en .env');
