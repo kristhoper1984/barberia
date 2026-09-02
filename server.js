@@ -12,13 +12,27 @@ const sentReminders = new Set();
 app.use(express.json());
 app.use(express.static(__dirname));
 
-app.get('/api/notifications/status', (req, res) => {
-  res.json({
+app.get('/api/notifications/status', async (req, res) => {
+  const status = {
     mailUserConfigured: Boolean(process.env.MAIL_USER),
     mailPasswordConfigured: Boolean(process.env.MAIL_PASSWORD),
     adminEmailConfigured: Boolean(process.env.ADMIN_EMAIL),
     supabaseConfigured: Boolean(process.env.SUPABASE_REST_URL && process.env.SUPABASE_KEY)
-  });
+  };
+
+  if (status.mailUserConfigured && status.mailPasswordConfigured) {
+    try {
+      await getTransporter().verify();
+      status.smtpConnection = true;
+    } catch (error) {
+      console.error('Verificación SMTP fallida:', error.message);
+      status.smtpConnection = false;
+    }
+  } else {
+    status.smtpConnection = false;
+  }
+
+  res.json(status);
 });
 
 function getTransporter() {
