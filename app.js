@@ -657,7 +657,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       return false;
     }
     saveState(state);
-    await sendNotification('reservation', record);
+    sendNotification('reservation', record);
     await renderDashboard();
     await renderTimeSlots();
     return true;
