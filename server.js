@@ -27,6 +27,7 @@ app.get('/api/notifications/status', async (req, res) => {
     } catch (error) {
       console.error('Verificación SMTP fallida:', error.message);
       status.smtpConnection = false;
+      status.smtpError = classifySmtpError(error);
     }
   } else {
     status.smtpConnection = false;
@@ -49,6 +50,12 @@ function getTransporter() {
       pass: process.env.MAIL_PASSWORD
     }
   });
+}
+
+function classifySmtpError(error) {
+  if (error?.code === 'EAUTH' || error?.responseCode === 535) return 'authentication_failed';
+  if (['ECONNECTION', 'ETIMEDOUT', 'ESOCKET'].includes(error?.code)) return 'connection_failed';
+  return 'smtp_configuration_failed';
 }
 
 function formatReservation(data) {
